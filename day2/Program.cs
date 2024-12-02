@@ -1,32 +1,24 @@
 ﻿using System.Text.RegularExpressions;
 
-List<int[]> list = new();
-int max = 0;
+var r1 = 0;
+var r2 = 0;
 
 using var reader = new StreamReader("input");
 while (reader.ReadLine() is { } line)
 {
-    max++;
     var strings = Regex.Split(line, @"\s+");
-    list.Add(strings.Select(int.Parse).ToArray());
-}
-
-var r1 = 0;
-var r2 = 0;
-foreach (var s in list)
-{
-    if (IsSafe(s))
+    var ints = strings.Select(int.Parse).ToArray();
+    
+    if (IsSafe(ints))
     {
         r1++;
         r2++;
     }
     else
     {
-        for (var index = 0; index < s.Length; index++)
+        for (var index = 0; index < ints.Length; index++)
         {
-            var tmp = s.ToList();
-            tmp.RemoveAt(index);
-            if (IsSafe(tmp.ToArray()))
+            if (IsSafe(ints, index))
             {
                 r2++;
                 break;
@@ -38,14 +30,18 @@ foreach (var s in list)
 Console.WriteLine(r1);
 Console.WriteLine(r2);
 
-bool IsSafe(int[] ints)
+bool IsSafe(IEnumerable<int> ints, int? skipIndex = null)
 {
     bool first = true;
     bool second = true;
     bool asc = true;
     int p = 0;
+    int index = 0;
     foreach (var i in ints)
     {
+        if (index++ == skipIndex)
+            continue;
+        
         if (first)
         {
             first = false;
