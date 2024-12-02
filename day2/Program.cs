@@ -1,13 +1,10 @@
-﻿using System.Text.RegularExpressions;
-
-var r1 = 0;
+﻿var r1 = 0;
 var r2 = 0;
 
 using var reader = new StreamReader("input");
 while (reader.ReadLine() is { } line)
 {
-    var strings = Regex.Split(line, @"\s+");
-    var ints = strings.Select(int.Parse).ToArray();
+    var ints = line.Split(' ').Select(int.Parse).ToList();
     
     if (IsSafe(ints))
     {
@@ -16,7 +13,7 @@ while (reader.ReadLine() is { } line)
     }
     else
     {
-        for (var index = 0; index < ints.Length; index++)
+        for (var index = 0; index < ints.Count; index++)
         {
             if (IsSafe(ints, index))
             {
@@ -30,17 +27,18 @@ while (reader.ReadLine() is { } line)
 Console.WriteLine(r1);
 Console.WriteLine(r2);
 
-bool IsSafe(IEnumerable<int> ints, int? skipIndex = null)
+bool IsSafe(List<int> ints, int? skipIndex = null)
 {
     bool first = true;
     bool second = true;
-    bool asc = true;
-    int p = 0;
-    int index = 0;
-    foreach (var i in ints)
+    bool ascending = true;
+    int previous = 0;
+    for (var index = 0; index < ints.Count; index++)
     {
-        if (index++ == skipIndex)
+        if (skipIndex == index)
             continue;
+        
+        var current = ints[index];
         
         if (first)
         {
@@ -51,22 +49,22 @@ bool IsSafe(IEnumerable<int> ints, int? skipIndex = null)
             if (second)
             {
                 second = false;
-                asc = p < i;
+                ascending = previous < current;
             }
 
-            if (asc)
+            if (ascending)
             {
-                if (IsUnsafePair(p, i))
+                if (IsUnsafePair(previous, current))
                     return false;
             }
             else
             {
-                if (IsUnsafePair(i, p))
+                if (IsUnsafePair(current, previous))
                     return false;
             }
         }
 
-        p = i;
+        previous = current;
     }
 
     return true;
