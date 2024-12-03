@@ -1,37 +1,34 @@
-﻿var r1 = 0;
-var r2 = 0;
+﻿var result1 = 0;
+var result2 = 0;
 
-using var reader = new StreamReader("input");
-while (reader.ReadLine() is { } line)
+foreach(var line in File.ReadAllLines("input"))
 {
     var ints = line.Split(' ').Select(int.Parse).ToList();
     
     if (IsSafe(ints))
     {
-        r1++;
-        r2++;
+        result1++;
+        result2++;
+        continue;
     }
-    else
+
+    for (var index = 0; index < ints.Count; index++)
     {
-        for (var index = 0; index < ints.Count; index++)
+        if (IsSafe(ints, index))
         {
-            if (IsSafe(ints, index))
-            {
-                r2++;
-                break;
-            }
+            result2++;
+            break;
         }
     }
 }
 
-Console.WriteLine(r1);
-Console.WriteLine(r2);
+Console.WriteLine(result1);
+Console.WriteLine(result2);
 
 bool IsSafe(List<int> ints, int? skipIndex = null)
 {
-    bool first = true;
-    bool second = true;
     bool ascending = true;
+    int count = 0;
     int previous = 0;
     for (var index = 0; index < ints.Count; index++)
     {
@@ -40,28 +37,13 @@ bool IsSafe(List<int> ints, int? skipIndex = null)
         
         var current = ints[index];
         
-        if (first)
+        if (++count > 1)
         {
-            first = false;
-        }
-        else
-        {
-            if (second)
-            {
-                second = false;
+            if (count == 2)
                 ascending = previous < current;
-            }
 
-            if (ascending)
-            {
-                if (IsUnsafePair(previous, current))
-                    return false;
-            }
-            else
-            {
-                if (IsUnsafePair(current, previous))
-                    return false;
-            }
+            if (ascending ? IsUnsafePair(previous, current) : IsUnsafePair(current, previous))
+                return false;
         }
 
         previous = current;
@@ -70,5 +52,4 @@ bool IsSafe(List<int> ints, int? skipIndex = null)
     return true;
 }
 
-bool IsUnsafePair(int previous, int current)
-    => previous >= current || current - previous > 3;
+bool IsUnsafePair(int previous, int current) => previous >= current || current - previous > 3;
