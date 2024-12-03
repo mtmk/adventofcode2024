@@ -1,4 +1,6 @@
-﻿using System.Text.RegularExpressions;
+﻿// https://adventofcode.com/2024/day/3/input
+
+using System.Text.RegularExpressions;
 
 {
     // Regex way

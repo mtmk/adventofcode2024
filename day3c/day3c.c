@@ -1,3 +1,5 @@
+// https://adventofcode.com/2024/day/3/input
+
 #include <stdio.h>
 
 int main(int argc, char* argv[])

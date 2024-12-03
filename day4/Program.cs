@@ -1,4 +1,6 @@
-﻿using System.Text.RegularExpressions;
+﻿// https://adventofcode.com/2024/day/4/input
+
+using System.Text.RegularExpressions;
 
 foreach (var line in File.ReadAllLines("input"))
 {

@@ -1,4 +1,6 @@
-﻿var result1 = 0;
+﻿// https://adventofcode.com/2024/day/2/input
+
+var result1 = 0;
 var result2 = 0;
 
 foreach(var line in File.ReadAllLines("input"))

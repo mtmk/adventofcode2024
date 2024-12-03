@@ -1,4 +1,6 @@
-﻿using System.Text.RegularExpressions;
+﻿// https://adventofcode.com/2024/day/1/input
+
+using System.Text.RegularExpressions;
 
 List<int> list1 = new();
 List<int> list2 = new();
